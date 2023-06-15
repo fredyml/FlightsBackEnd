@@ -1,5 +1,7 @@
 using Flights.Application.Contracts;
+using Flights.Application.Dtos;
 using Flights.Application.Services;
+using Flights.Infrastructure.Services;
 using Flights.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +18,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddScoped<IFlightManagerService, FlightManagerService>();
+builder.Services.AddScoped<IHttpClientService<List<NewShoreResponseDto>>, HttpClientService<List<NewShoreResponseDto>>>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
