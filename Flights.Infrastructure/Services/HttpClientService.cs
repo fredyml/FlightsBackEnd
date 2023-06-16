@@ -1,37 +1,42 @@
 ﻿using Flights.Application.Contracts;
-using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace Flights.Infrastructure.Services
 {
     public class HttpClientService<T> : IHttpClientService<T>
     {
-        private readonly HttpClient httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public HttpClientService(HttpClient httpClient)
+        public HttpClientService(IHttpClientFactory httpClientFactory)
         {
-            this.httpClient = httpClient;
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
         public async Task<T> GetAsync(string url)
         {
-            using (var response = await httpClient.GetAsync(url))
+            var httpClient = _httpClientFactory.CreateClient();
+            var response = await httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
             {
-                response.EnsureSuccessStatusCode();
-                var responseContent = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(responseContent);
+                return await response.Content.ReadFromJsonAsync<T>();
             }
+
+            throw new HttpRequestException($"Cannot GET from {url}. Status code: {response.StatusCode}");
         }
 
         public async Task<TResponse> PostAsync<TRequest, TResponse>(string url, TRequest requestData)
         {
+            var httpClient = _httpClientFactory.CreateClient();
             var requestContent = JsonContent.Create(requestData);
+            var response = await httpClient.PostAsync(url, requestContent);
 
-            using (var response = await httpClient.PostAsync(url, requestContent))
+            if (response.IsSuccessStatusCode)
             {
-                response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<TResponse>();
             }
+
+            throw new HttpRequestException($"Cannot POST to {url}. Status code: {response.StatusCode}");
         }
     }
 }

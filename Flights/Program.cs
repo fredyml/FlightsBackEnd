@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Flights.Application.Contracts;
 using Flights.Application.Dtos;
 using Flights.Application.Services;
@@ -15,9 +16,15 @@ builder.Services.AddControllers(options =>
     options.Filters.Add(new CustomExceptionFilter());
 });
 
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddScoped<IFlightManagerService, FlightManagerService>();
+builder.Services.AddOptions();
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>(); 
+builder.Services.AddTransient<IFlightDataService, FlightDataService>();
+builder.Services.AddScoped<IFlightRouteService, FlightRouteService>();
 builder.Services.AddScoped<IHttpClientService<List<NewShoreResponseDto>>, HttpClientService<List<NewShoreResponseDto>>>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -48,9 +55,11 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<AuthenticationRequirementOperationFilter>();
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -60,6 +69,8 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flights API V1");
     });
 }
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 

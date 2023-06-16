@@ -9,24 +9,19 @@ namespace Flights.WebApi.Controllers
     [Route("api/Flights")]
     public class FlightManagerController : ControllerBase
     {
-        private readonly IFlightManagerService _flightManagerService;
+        private readonly IFlightRouteService _flightManagerService;
 
-        public FlightManagerController(IFlightManagerService flightManagerService) 
+        public FlightManagerController(IFlightRouteService flightManagerService) 
         { 
             _flightManagerService = flightManagerService;
         }
 
         [AllowAnonymous]
         [HttpPost("CalculateRoute")]
-        public IActionResult CalculateRoute([FromBody] FlightRequestModel flightRequestModel)
+        public async Task<IActionResult> CalculateRoute([FromBody] FlightRequestModel flightRequestModel)
         {
-            var route = new FlightRequestModel
-            {
-                Origin = flightRequestModel.Origin,
-                Destination = flightRequestModel.Destination
-            };
-
-            return Ok(route);
+            var result = await _flightManagerService.CalculateRoute(flightRequestModel.Origin, flightRequestModel.Destination);
+            return Ok(result);
         }
     }
 }

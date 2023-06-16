@@ -6,6 +6,6 @@
         public string ArrivalStation { get; set; }
         public string FlightCarrier { get; set; }
         public string FlightNumber { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
     }
 }
