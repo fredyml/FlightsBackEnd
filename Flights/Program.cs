@@ -2,7 +2,7 @@ using AspNetCoreRateLimit;
 using Flights.Application.Contracts;
 using Flights.Application.Dtos;
 using Flights.Application.Services;
-using Flights.Infrastructure.Logs;
+using Flights.Infrastructure.Log;
 using Flights.Infrastructure.Services;
 using Flights.WebApi.Filters;
 using Microsoft.OpenApi.Models;
