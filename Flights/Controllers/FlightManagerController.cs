@@ -17,7 +17,6 @@ namespace Flights.WebApi.Controllers
             _flightManagerService = flightManagerService;
         }
 
-        [AllowAnonymous]
         [HttpPost("CalculateRoute")]
         public async Task<IActionResult> CalculateRoute([FromBody] FlightRequestModel flightRequestModel)
         {
