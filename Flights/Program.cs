@@ -22,7 +22,7 @@ builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection(
 builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
 builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>(); 
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 builder.Services.AddTransient<IFlightDataService, FlightDataService>();
 builder.Services.AddScoped<IFlightRouteService, FlightRouteService>();
 builder.Services.AddScoped<IHttpClientService<List<NewShoreResponseDto>>, HttpClientService<List<NewShoreResponseDto>>>();
@@ -73,6 +73,13 @@ if (app.Environment.IsDevelopment())
 app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
+
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});
 
 app.UseAuthorization();
 
