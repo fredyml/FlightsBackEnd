@@ -6,6 +6,7 @@ using Flights.Infrastructure.Log;
 using Flights.Infrastructure.Services;
 using Flights.WebApi.Filters;
 using Microsoft.OpenApi.Models;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddTransient<IFlightDataService, FlightDataService>();
 builder.Services.AddScoped<IFlightRouteService, FlightRouteService>();
 builder.Services.AddScoped<IHttpClientService<List<NewShoreResponseDto>>, HttpClientService<List<NewShoreResponseDto>>>();
 builder.Services.AddScoped<ILoggerManager, LoggerManager>();
+builder.Host.UseNLog();
 
 builder.Services.AddSwaggerGen(c =>
 {
