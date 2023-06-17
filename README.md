@@ -6,16 +6,22 @@ Architecture
 The Flights service follows the clean architecture pattern, which promotes separation of concerns and maintainability. It consists of the following layers:
 
 Presentation: Handles user interactions and input/output operations. This layer includes the Flights.WebApi project, which should be set as the startup project.
+
 Application: Contains the application logic and orchestrates the flow of data between the presentation and domain layers.
+
 Domain: Defines the core business logic and entities of the Flights service.
+
 Infrastructure: Provides implementations for external dependencies, such as databases or external services.
+
 Test: Includes unit tests to ensure the quality and correctness of the code.
+
 Environment Variables
 The following environment variables are used in the Flights service:
 
 ASPNETCORE_ENVIRONMENT: Specifies the runtime environment for the service.
 MULTIPLE_RETURN_ROUTES_URL: Defines the URL for a service that provides multiple return routes.
 MAX_FLIGHT_COUNT: Specifies the maximum number of flights for the route calculation.
+
 Features
 The Flights service includes the following features:
 
