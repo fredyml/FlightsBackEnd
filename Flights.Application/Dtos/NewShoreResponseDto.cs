@@ -2,10 +2,10 @@
 {
     public class NewShoreResponseDto
     {
-        public string DepartureStation { get; set; }
-        public string ArrivalStation { get; set; }
-        public string FlightCarrier { get; set; }
-        public string FlightNumber { get; set; }
+        public string DepartureStation { get; set; } = string.Empty;
+        public string ArrivalStation { get; set; } = string.Empty;
+        public string FlightCarrier { get; set; } = string.Empty;
+        public string FlightNumber { get; set; } = string.Empty;
         public decimal Price { get; set; }
     }
 }
