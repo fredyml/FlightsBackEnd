@@ -6,12 +6,12 @@ namespace Flights.Application.Services
     public class FlightRouteService : IFlightRouteService
     {
         private readonly IFlightDataService _flightDataService;
-        private readonly int _maxFlightCount;
+        public int MaxFlightCount { get; set; }
 
         public FlightRouteService(IFlightDataService flightDataService)
         {
             _flightDataService = flightDataService;
-            _maxFlightCount = Convert.ToInt32(Environment.GetEnvironmentVariable("MAX_FLIGHT_COUNT"));
+            MaxFlightCount = Convert.ToInt32(Environment.GetEnvironmentVariable("MAX_FLIGHT_COUNT"));
         }
 
         public async Task<JourneyDto> CalculateRoute(string origin, string destination)
@@ -24,7 +24,7 @@ namespace Flights.Application.Services
                 throw new InvalidOperationException("Su consulta no puede ser procesada");
             }
 
-            if (route.Count > _maxFlightCount)
+            if (route.Count > MaxFlightCount)
             {
                 throw new InvalidOperationException("El número de vuelos en la ruta excede el límite permitido");
             }

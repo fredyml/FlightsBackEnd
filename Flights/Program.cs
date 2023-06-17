@@ -2,6 +2,7 @@ using AspNetCoreRateLimit;
 using Flights.Application.Contracts;
 using Flights.Application.Dtos;
 using Flights.Application.Services;
+using Flights.Infrastructure.Logs;
 using Flights.Infrastructure.Services;
 using Flights.WebApi.Filters;
 using Microsoft.OpenApi.Models;
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add(new CustomExceptionFilter());
+    options.Filters.Add<CustomExceptionFilter>();
 });
 
 builder.Services.AddOptions();
@@ -23,6 +24,7 @@ builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrateg
 builder.Services.AddTransient<IFlightDataService, FlightDataService>();
 builder.Services.AddScoped<IFlightRouteService, FlightRouteService>();
 builder.Services.AddScoped<IHttpClientService<List<NewShoreResponseDto>>, HttpClientService<List<NewShoreResponseDto>>>();
+builder.Services.AddScoped<ILoggerManager, LoggerManager>();
 
 builder.Services.AddSwaggerGen(c =>
 {
