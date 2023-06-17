@@ -6,10 +6,6 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SQL_CONNECTION": "Server=localhost\\\\SQLEXPRESS;Database=Flights;Trusted_Connection=True;",
-        "KEY": "AF8op5ubAUFkhaI0Gynaj8KjX20B2wPn3OnWLBPQZwg=",
-        "UNIQUE_ROUTES_URL": "https://recruiting-api.newshore.es/api/flights/0",
-        "MULTIPLE_ROUTES_URL": "https://recruiting-api.newshore.es/api/flights/1",
         "MULTIPLE_RETURN_ROUTES_URL": "https://recruiting-api.newshore.es/api/flights/2",
         "MAX_FLIGHT_COUNT": "2"
       },
